@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>React App</title>
+</head>
+<body>
+
+<div class="modal fade" id="logout-modal" style="display: none">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Logout
+            </div>
+            <div class="modal-body">
+                Are you sure want to log out?
+            </div>
+            <div class="modal-footer">
+                <button class="btn-danger" id="logout_btn"> Logout</button>
+                <button class="btn-primary"> Cancel</button>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<main>
+    <nav style="float: right; color: cornflowerblue" id="logout">Logout?</nav>
+    <h1>Welcome {{ request.user }} to IG.</h1>
+    <h4>There we'll render react component!</h4>
+</main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+    $("#logout_btn").click(function () {
+        $('#logout-modal').modal('hide');
+        $.ajax({
+            url: '{% url "logout" %}'
+        }).done(function (data) {
+            if (data === "OK") {
+                window.location = "{% url 'home' %}";
+            }
+        })
+    });
+
+    $("#logout").click(function () {
+        $('#logout-modal').modal('show');
+    });
+</script>
+</body>
+</html>

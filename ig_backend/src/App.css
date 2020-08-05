@@ -1,0 +1,107 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.post_profile_pic{
+  max-width: 40px;
+  height: 20px;
+}
+
+.post{
+  max-width: 600px;
+}
+
+.navbar{
+  background-color: #ffffff !important;
+  position: sticky;
+  top: 0;
+  z-index: 10000000;
+}
+
+.nav_btn {
+  padding: 0 !important;
+  max-width: 50px;
+}
+
+.nav_utils {
+  width: -webkit-fill-available;
+}
+
+.search {
+  max-width: 180px;
+}
+
+#profile_pic_min{
+  max-width: 40px;
+  height: 20px;
+}
+
+.post_ctr{
+  max-width: 600px;
+}
+
+.card{
+  max-width: 600px;
+  margin: 25px 250px 0px 250px;
+}
+
+.card-header {
+  margin: auto 0;
+  background-color: #ffffff;
+}
+
+.card-footer{
+  border-top: 0px !important;
+  background-color: #ffffff;
+}
+
+.username {
+  color: black;
+}
+
+.like_ctr, .comment_ctr, .share_ctr {
+  margin-left: 15px;
+  margin-bottom: 5px;
+}
+
+.footer2 {
+  border-top: 1px solid #dbdbdb !important;
+}
+.card-body {
+  padding: 0 !important;
+}

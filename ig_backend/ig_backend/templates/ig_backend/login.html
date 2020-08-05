@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Log In</title>
+</head>
+<body>
+    <div>
+        <form action="#">
+            <div>
+                <input type="text" placeholder="Username" id="username">
+            </div>
+            <div>
+                <input type="password" placeholder="Password" id="password">
+            </div>
+            <div>
+                <button type="button" id="login">Log In</button>
+            </div>
+        </form>
+
+        <span>Don't have an account?
+            <a href='{% url "sign_up" %}'>Sign Up</a>
+        </span>
+    </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $("#login").click(()=>{
+            let username = $("#username").val();
+            let password =  $("#password").val();
+            if (!username || !password) {
+                return;
+            }
+            $.ajax({
+                url: "{% url 'sign_in' %}",
+                method: "POST",
+                data: {
+                    username: username,
+                    password: password,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+            }).done(function (data) {
+                if (data !== 'OK') {
+                    alert(data)
+                } else {
+                    window.location.reload();
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
