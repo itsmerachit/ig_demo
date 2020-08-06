@@ -8,7 +8,11 @@ def home(request):
     if not request.user.is_authenticated:
         return render(request, 'ig_backend/homepage.html', {})
     else:
-        return render(request, 'ig_backend/welcome.html', {})
+        users = UserProfile.objects.all()
+        context = {
+            'users': users
+        }
+        return render(request, 'ig_backend/welcome.html', context)
 
 
 def sign_in(request):
