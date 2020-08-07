@@ -122,3 +122,11 @@ code {
 .card-body {
   padding: 0 !important;
 }
+.fas, .far {
+  font-size: 22px;
+  padding-top: 2px;
+}
+
+.fa-user {
+  color:black;
+}

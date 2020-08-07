@@ -1,4 +1,5 @@
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import *
@@ -16,9 +17,8 @@ def home(request):
 
 
 def sign_in(request):
-    print("attempting login")
     if request.method == "GET":
-        return render(request, 'ig_backend/login.html', {})
+        return render(request, 'ig_backend/homepage.html', {})
     else:
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -69,8 +69,24 @@ def check_username(request):
         return HttpResponse('Bad Request', status=400)
 
 
+@login_required
 def sign_out(request):
     logout(request)
     response = HttpResponse("OK")
     response.delete_cookie('username')
     return response
+
+
+@login_required
+def profile(request, username):
+    context = {
+        'username': username
+    }
+    return render(request, 'ig_backend/profile.html', context)
+
+
+@login_required
+def upload(request):
+    if request.method == 'POST':
+        pass
+    return HttpResponse("OK")

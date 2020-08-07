@@ -1,28 +1,72 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <meta charset="UTF-8">
     <title>IG</title>
+    <style>
+        .btn-primary {
+            background-color: #0095f7 !important;
+        }
+        #signup_btn{
+            color: #0095f6;
+        }
+        body {
+            height: 100%;
+            background-color: #fafafa;
+        }
+        form{
+            background-color: #ffffff;
+            margin-top: 10rem;
+        }
+        .logo {
+            max-height: 80px !important;
+            display: block;
+        }
+        .form-group:first-child{
+            margin-bottom: 2rem;
+        }
+        .form_contents{
+            padding: 2rem 0;;
+        }
+        .signup_para{
+            margin-bottom: 0px;
+        }
+    </style>
 </head>
 <body>
-<h2>Welcome to Instagram</h2>
-<form action="#">
-    <div>
-        <input type="text" placeholder="Username" id="username">
-        <label for="username">Enter your Username</label>
+    <div id="root">
+        <div class="row h-100">
+            <form class="border col-md-4 mx-auto pt-2">
+                <div class="form_contents">
+                    <div class="form-group">
+                        <img src="{% static 'images/ig_name.png' %}" alt="Instagram" class="mx-auto my-auto logo">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Username" id="username" class="form-control w-75 mx-auto">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control w-75 mx-auto" placeholder="Password" id="password">
+                    </div>
+                    <div class="form-group">
+<!--                        <button type="button" id="login_btn" class="btn btn-primary form-control w-75 mx-auto">Log In</button>-->
+                        <button type="button" class="form-control w-75 mx-auto btn-primary" id="login_btn">Log In</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+            <div class="row mt-3">
+                <div class="border col-md-4 mx-auto ">
+                    <div>
+                        <p class="mx-auto signup_para">
+                            <span class="mx-auto w-100">Don't have an account?
+                                <a href='{% url "sign_up" %}' id="signup_btn">Sign Up</a>
+                            </span>
+                        </p>
+                </div>
+            </div>
     </div>
-    <div>
-        <input type="password" placeholder="Password" id="password">
-        <label for="email">Enter your password</label>
-    </div>
-    <button type="button" id="login_btn">Log In</button>
-    <br>
-    <span>Don't have an account?
-            <a href='{% url "sign_up" %}'>Sign Up</a>
-        </span>
-</form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $("#login_btn").click(() => {
@@ -46,7 +90,7 @@
                 alert(data)
             } else {
                 console.log("here2")
-                window.location.reload()
+                window.location = "{% url 'home' %}";
             }
         });
     });
