@@ -2,19 +2,30 @@ let ReactDOM = ReactDOM;
 const {useState, useEffect} = React;
 
 function App() {
-    const [posts, setPosts] = useState([]);
-    const [username, setUsername] = useState([]);
+    let [posts, setPosts] = useState([]);
+    let [username, setUsername] = useState([]);
+
     useEffect(() => {
-        const postItems = [{username: 'itsmerachit'}, {username: 'niyati12'}];
-        setPosts(postItems);
+     fetch('/posts/')
+        .then((data) => data.json())
+        .then((res) => {
+               setPosts(res);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
         setUsername(current_user_username);
     }, []);
+
     return (
         <section>
             <Navbar username={username}/>
+
             <div>
                 {
                     posts.map((post, index) => {
+                        var src = post.fields.image.slice(2, post.fields.image.lastIndexOf("'"))
                         return (
                             <div className="card" key={index}>
 
@@ -24,7 +35,7 @@ function App() {
                                             <img src="logo.svg" alt="logo" className="post_profile_pic" />
                                         </div>
                                         <div>
-                                            <span>{post.username}
+                                            <span>{post.fields.owner}
                                             </span>
                                         </div>
                                     </div>
@@ -35,7 +46,7 @@ function App() {
 
                                 <div className="card-body">
                                     <div className="post_ctr">
-                                        <img className="post" src="post.jpg" alt="post"/>
+                                        <img className="post" src={src} alt="post"/>
                                     </div>
                                 </div>
 
@@ -55,8 +66,8 @@ function App() {
                                         <span>13,998 likes</span>
                                     </div>
                                     <div className="username_ctr">
-                                        <span><a href="#" className="username">{post.username}</a></span>
-                                        <span className="caption-ctr">&nbsp;&nbsp;caption</span>
+                                        <span><a href="#" className="username">{post.fields.owner}</a></span>
+                                        <span className="caption-ctr">&nbsp;&nbsp;{post.fields.content}</span>
                                     </div>
                                 </div>
 
@@ -234,4 +245,17 @@ const goToUpload = async (e) => {
             })
         })
     })
+}
+
+
+const fetchPosts = async () => {
+    await fetch('/posts/')
+        .then(data => data.json())
+        .then(res => {
+            return res
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
 }

@@ -26,4 +26,5 @@ urlpatterns = [
     path('check_username/', check_username, name='check_username'),
     path('<str:username>', profile, name='profile'),
     path('upload/', upload, name='upload'),
+    path('posts/', get_posts, name='get_posts'),
 ]

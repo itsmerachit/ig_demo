@@ -3,12 +3,14 @@ import json
 import firebase_admin, os
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from .models import *
 from . import settings
 from firebase_admin import auth, firestore, credentials
 import uuid
+from django.core import serializers
+
 
 if (not len(firebase_admin._apps)):
     cred = credentials.Certificate(os.path.join(settings.BASE_DIR, 'ig_backend/db.json'))
@@ -141,3 +143,10 @@ def create_fs_user(user_obj):
     except auth.AuthError as e:
         print(e.detail)
         return -1
+
+
+@login_required
+def get_posts(request):
+    posts = Post.objects.all()
+    posts_json = serializers.serialize('json', posts)
+    return HttpResponse(posts_json,  content_type='application/json')
