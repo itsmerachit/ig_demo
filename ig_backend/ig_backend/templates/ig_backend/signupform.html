@@ -87,7 +87,10 @@
                 username: username
             }
         }).done(function(data){
-            console.log(data)
+            if (data !== 'OK') {
+                alert(data)
+                $("#username").val('');
+            }
         })
     })
 </script>

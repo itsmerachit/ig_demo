@@ -130,3 +130,10 @@ code {
 .fa-user {
   color:black;
 }
+
+#upload_file {
+  opacity: 0;
+  position: relative;
+  display: -webkit-inline-box;
+  right: 22px;
+}

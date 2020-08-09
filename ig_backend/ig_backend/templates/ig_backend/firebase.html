@@ -1,0 +1,29 @@
+<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-database.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-functions.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-messaging.js"></script>
+
+
+<script>
+    let firebase_config = {{config | safe}};
+    const my_firebase = firebase.initializeApp(firebase_config);
+    const my_firestore = my_firebase.firestore();
+    const my_storage = my_firebase.storage();
+</script>
+<script>
+    const user_id = '{{fs_id}}';
+    const password = '{{fs_pswd}}';
+    my_firebase.auth().signInWithEmailAndPassword(user_id, password)
+    .then((result)=>{
+        const firebase_user = result.user;
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+</script>

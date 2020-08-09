@@ -100,7 +100,7 @@ const Navbar = (props) => {
                         <div className="">
                             <div className="row">
 
-                                <div className="col nav_btn" title="Home">
+                                <div className="col nav_btn">
                                     <div className="nav-link" id="home" onClick={()=>{goToHome()}}>
                                         <i className="fas fa-home"></i>
                                     </div>
@@ -115,7 +115,7 @@ const Navbar = (props) => {
                                 <div className="col nav_btn">
                                     <div className="nav-link" id="camera" /*onClick={()=>{goToUpload()}}*/>
                                         <i className="fas fa-camera">
-                                            <input type="file" name="file"  id="upload_file" onChange={(event)=>{goToUpload(event)}}/>
+                                            <input style={{"opacity": "0"}} type="file" name="file" id="upload_file" onChange={(event)=>{goToUpload(event)}}/>
                                         </i>
 
                                     </div>
@@ -191,7 +191,47 @@ const goToNotifications = () => {
 
 }
 
-const goToUpload = (e) => {
-    const file = e.target.files[0]
+const goToUpload = async (e) => {
+    let file = e.target.files[0]
+    let name = file.name
+    let file_blob = new Blob([file])
 
+    const uploadTask = my_storage
+        .ref()
+        .child(name)
+        .put(file_blob);
+
+    await uploadTask.on('state_changed', function (snapshot) {
+        switch (snapshot.state) {
+            case firebase.storage.TaskState.PAUSED: // or 'paused'
+                break;
+            case firebase.storage.TaskState.RUNNING: // or 'running'
+                break;
+        }
+    },
+    error => {
+        console.log(error);
+    },
+    () => {
+        uploadTask.snapshot.ref.getDownloadURL()
+            .then(async (downloadURL) => {
+                console.log(downloadURL);
+                await fetch('/upload/', {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: downloadURL
+            })
+            .then(res=>{
+                console.log(res)
+
+            })
+            .catch(err=> {
+                console.log(err)
+            })
+        })
+    })
 }
