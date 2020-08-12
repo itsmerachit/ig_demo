@@ -1,0 +1,29 @@
+{% load static %}
+
+ <div class="modal fade" id="modal_upload" style="opacity: 1;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Upload a Post</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div>
+                    <input type="file" id="post_upload" accept="image/*">
+                </div>
+                <div>
+                    <textarea placeholder="Caption" id="caption" cols="25" rows="1"></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a id="upload_btn" class="btn" href="#" style="background-color: #107cef; color: white">Upload</a>
+                <a class="btn u-btn-gray" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>

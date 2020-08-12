@@ -39,7 +39,7 @@ def sign_in(request):
     else:
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             print("logging in")
             login(request, user)
@@ -66,6 +66,7 @@ def sign_up(request):
                 first_name=first_name, last_name=last_name, username=username, email=email
             )
             new_user.is_staff = False
+            new_user.set_password(password)
             new_user.save()
             user_profile = UserProfile(
                 user=new_user, username=username, email=email, gender=gender, fs_password=password
@@ -106,8 +107,9 @@ def profile(request, username):
 @login_required
 def upload(request):
     if request.method == 'POST':
-        file_url = request.body
-        caption = 'My First Post'
+        data = json.loads(request.body)
+        file_url = data['url']
+        caption = data['caption']
         owner = User.objects.filter(id=request.user.id).first()
         post = Post(
             owner=owner, image=file_url, content=caption
@@ -147,6 +149,23 @@ def create_fs_user(user_obj):
 
 @login_required
 def get_posts(request):
-    posts = Post.objects.all()
-    posts_json = serializers.serialize('json', posts)
-    return HttpResponse(posts_json,  content_type='application/json')
+    posts = Post.objects.all().order_by('-created_at')
+    data = []
+    for post in posts:
+        user = UserProfile.objects.filter(user=post.owner).first()
+        likes = Likes.objects.filter(post=post.id)
+        liked_by = []
+        if likes.count() > 0:
+            for like in likes:
+                liked_by.append(like.user.username)
+
+        post_data = {
+            'image': post.image,
+            'owner': user.username,
+            'caption': post.content,
+            'likes': likes.count(),
+            'liked_by': liked_by
+        }
+        data.append(post_data)
+
+    return HttpResponse(json.dumps(data),  content_type='application/json')

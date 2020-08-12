@@ -1,0 +1,37 @@
+main {
+    background-color: #fafafa;
+}
+
+.navbar {
+    background-color: #ffffff !important;
+    position: sticky;
+    top: 0;
+    z-index: 10000000;
+}
+
+.nav_btn {
+    padding: 0 !important;
+    max-width: 50px;
+}
+
+.nav_utils {
+    width: -webkit-fill-available;
+    height: 45px !important;
+}
+
+.search {
+    max-width: 180px;
+}
+
+.fas, .far {
+  font-size: 22px;
+  padding-top: 2px;
+}
+
+.fa-user {
+  color:black;
+}
+
+.nav-link:hover {
+    cursor: pointer;
+}
