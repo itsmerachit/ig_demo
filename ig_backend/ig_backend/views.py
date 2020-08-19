@@ -98,8 +98,14 @@ def sign_out(request):
 
 @login_required
 def profile(request, username):
+    userprofile = request.user.userprofile
+    posts_count = Post.objects.filter(owner=request.user).count()
     context = {
-        'username': username
+        'users': userprofile,
+        'config': json.dumps(settings.FIREBASE_CONFIG),
+        'fs_id': str(userprofile.fs_user_id) + '@ig.com',
+        'fs_pswd': userprofile.fs_password,
+        'no_of_posts': posts_count
     }
     return render(request, 'ig_backend/profile.html', context)
 
@@ -157,15 +163,39 @@ def get_posts(request):
         liked_by = []
         if likes.count() > 0:
             for like in likes:
-                liked_by.append(like.user.username)
+                print(like.user.username)
+                liked_by.append(str(like.user.username))
+
+        liked_by_current_user = False
+        if str(request.user) in liked_by:
+            liked_by_current_user = True
 
         post_data = {
+            'id': post.id,
             'image': post.image,
             'owner': user.username,
             'caption': post.content,
             'likes': likes.count(),
-            'liked_by': liked_by
+            'likedBy': liked_by,
+            'likedByCurrentUser': liked_by_current_user
         }
         data.append(post_data)
 
     return HttpResponse(json.dumps(data),  content_type='application/json')
+
+@login_required
+def like(request):
+    post_id = json.loads(request.body)['post']
+    user = User.objects.get(username=request.user)
+    post = Post.objects.get(id=post_id)
+    like_post = Likes(post=post, user=user)
+    like_post.save()
+    return HttpResponse("ok")
+
+
+@login_required
+def unlike(request):
+    post_id = json.loads(request.body)['post']
+    like_post = Likes.objects.filter(post=post_id, user=request.user.id).first()
+    like_post.delete()
+    return HttpResponse("ok")

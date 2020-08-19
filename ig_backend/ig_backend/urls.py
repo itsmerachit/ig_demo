@@ -27,4 +27,6 @@ urlpatterns = [
     path('<str:username>', profile, name='profile'),
     path('upload/', upload, name='upload'),
     path('posts/', get_posts, name='get_posts'),
+    path('like/', like, name='like'),
+    path('unlike/', unlike, name='unlike'),
 ]

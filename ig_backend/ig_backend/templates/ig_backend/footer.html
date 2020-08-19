@@ -11,12 +11,13 @@
             </div>
 
             <!-- Modal body -->
-            <div class="modal-body">
-                <div>
-                    <input type="file" id="post_upload" accept="image/*">
+            <div class="modal-body form">
+                <div class="custom-file upload-file-ctr">
+                    <input type="file" class="custom-file-input" id="post_upload" accept="image/*" required>
+                    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
                 </div>
-                <div>
-                    <textarea placeholder="Caption" id="caption" cols="25" rows="1"></textarea>
+                <div class="caption-ctr form-group-sm">
+                    <input class="form-control" id="caption" placeholder="Caption"></input>
                 </div>
             </div>
 

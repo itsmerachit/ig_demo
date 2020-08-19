@@ -22,6 +22,10 @@ $("#logout_btn").click(function () {
 $("#upload_btn").click(function (){
     let file = $("#post_upload").prop('files')[0];
     let caption = $("#caption").val();
+    if (!file) {
+        console.log("No file selected");
+        return;
+    }
     uploadPost(file, caption);
 });
 
@@ -66,6 +70,7 @@ async function uploadPost(file, caption) {
             .then((res)=>{
                 console.log(res);
                 $("#modal_upload").modal('hide');
+                window.location.reload();
             })
             .catch((error)=> {
                 console.log(error);
@@ -89,3 +94,7 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+$("#home_nav").click(function (){
+    window.location.href = '/'
+});

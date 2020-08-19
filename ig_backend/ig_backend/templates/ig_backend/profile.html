@@ -1,10 +1,55 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Instagram</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/header.css'%}">
+        <link rel="stylesheet" href="{% static 'css/react-profile.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+          integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+          crossorigin="anonymous"/>
+
 </head>
 <body>
-    This is your profile {{ username }}
+<main>
+    {% include "ig_backend/header.html" %}
+    <div id="root"></div>
+    {% include "ig_backend/footer.html" %}
+    {% include "ig_backend/footer-js.html" %}
+</main>
+
+<div class="modal fade" id="modal_profile_pic">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">Change Profile Photo</div>
+            <div class="modal-body">
+                <div class="" id="upload_profile_pic">
+                    Upload New
+                    <input type="file" id="post_upload" accept="image/*">
+                </div>
+            </div>
+            <div class="modal-body" id="remove_profile_pic">Remove Current</div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--React dependencies-->
+<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script type="text/babel" src="{% static 'js/react-profile.js' %}"></script>
+
+{% include "ig_backend/firebase-js.html" %}
+<script>
+    let current_user_username = '{{ request.user.username }}';
+</script>
 </body>
 </html>
