@@ -29,4 +29,5 @@ urlpatterns = [
     path('posts/', get_posts, name='get_posts'),
     path('like/', like, name='like'),
     path('unlike/', unlike, name='unlike'),
+    path('comment/', add_comment, name='add_comment'),
 ]

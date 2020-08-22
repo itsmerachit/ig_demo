@@ -162,14 +162,21 @@ def get_posts(request):
         likes = Likes.objects.filter(post=post.id)
         liked_by = []
         if likes.count() > 0:
-            for like in likes:
-                print(like.user.username)
-                liked_by.append(str(like.user.username))
+            for individual_like in likes:
+                liked_by.append(str(individual_like.user.username))
 
         liked_by_current_user = False
         if str(request.user) in liked_by:
             liked_by_current_user = True
 
+        comments_array = []
+        comments = Comment.objects.filter(post=post.id)
+        for every_comment in comments:
+            comment_data = {
+                'text': every_comment.content,
+                'user': '/' + str(every_comment.user.username)
+            }
+            comments_array.append(comment_data)
         post_data = {
             'id': post.id,
             'image': post.image,
@@ -177,7 +184,8 @@ def get_posts(request):
             'caption': post.content,
             'likes': likes.count(),
             'likedBy': liked_by,
-            'likedByCurrentUser': liked_by_current_user
+            'likedByCurrentUser': liked_by_current_user,
+            'comment_data': comments_array
         }
         data.append(post_data)
 
@@ -190,7 +198,7 @@ def like(request):
     post = Post.objects.get(id=post_id)
     like_post = Likes(post=post, user=user)
     like_post.save()
-    return HttpResponse("ok")
+    return HttpResponse("ok", content_type='application/json')
 
 
 @login_required
@@ -198,4 +206,16 @@ def unlike(request):
     post_id = json.loads(request.body)['post']
     like_post = Likes.objects.filter(post=post_id, user=request.user.id).first()
     like_post.delete()
-    return HttpResponse("ok")
+    return HttpResponse("ok", content_type='application/json')
+
+
+@login_required
+def add_comment(request):
+    data = json.loads(request.body)
+    comment = data['comment']
+    post_id = data['post_id']
+    user = User.objects.get(username=request.user)
+    post = Post.objects.filter(id=post_id).first()
+    new_comment = Comment(post=post, user=user, content=comment[:40])
+    new_comment.save()
+    return HttpResponse('ok', content_type='application/json')

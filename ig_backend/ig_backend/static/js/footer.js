@@ -1,3 +1,5 @@
+$("#isLoading").hide();
+
 function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
         .toString(16)
@@ -6,6 +8,9 @@ function s4() {
 function uuid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
+}
+function changeLoadingState(){
+    $("#isLoading").toggle()
 }
 
 $("#logout_btn").click(function () {
@@ -20,6 +25,8 @@ $("#logout_btn").click(function () {
 });
 
 $("#upload_btn").click(function (){
+
+    changeLoadingState()
     let file = $("#post_upload").prop('files')[0];
     let caption = $("#caption").val();
     if (!file) {
@@ -68,11 +75,12 @@ async function uploadPost(file, caption) {
                     data: JSON.stringify(data)
             })
             .then((res)=>{
-                console.log(res);
+                changeLoadingState()
                 $("#modal_upload").modal('hide');
                 window.location.reload();
             })
             .catch((error)=> {
+                changeLoadingState()
                 console.log(error);
             });
         });

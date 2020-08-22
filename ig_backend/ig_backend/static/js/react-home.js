@@ -3,9 +3,14 @@ const {useState, useEffect} = React;
 
 
 function Post({item})  {
+    const profile_url = '/'+item.owner
     const [likes, setlikes] = useState(item.likes);
     const [isLiked, setIsLiked] = useState(item.likedByCurrentUser);
+    const [newComment, setNewComment] = useState('');
+    const [commentDisabled, setcommentDisabled] = useState(true);
+    const [allComments, setAllComments] = useState([]);
 
+    // Handles like and unlike functionality
      const likePost = (post) => {
         let data ={ "post": post.id};
 
@@ -51,21 +56,71 @@ function Post({item})  {
 
     };
 
+     // handles comment functionality
+     useEffect(()=> {
+         if(newComment.length > 0) {
+             setcommentDisabled(false);
+         } else {
+             setcommentDisabled(true);
+         }
+     },[newComment]);
+
+     useEffect(()=> {
+         setAllComments(item.comment_data);
+     }, []);
+
+     const handleCommentInput = (post) => {
+         if (newComment.length < 1){
+             return;
+         }
+
+         const data = {
+             'comment': newComment,
+             'post_id': post.id
+         };
+         fetch('/comment/', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify(data)
+            })
+             .then((res)=> {
+                 setcommentDisabled(true);
+                 setAllComments((data) => [...data, {'text': newComment, 'user': '/'+ current_user_username}]);
+                 setNewComment('');
+             })
+            .catch((error) => {
+                console.log(error);
+            });
+     };
+
+     const renderComments = (comments) => {
+
+     };
+
     return (
         <div className="card" key={item.id}>
 
+            {/*Post Start*/}
             <div className="card-header row">
                 <div className="row">
                     <div className="post_profile_pic_ctr">
                         <img src={logo} alt="" className="post_profile_pic" />
                     </div>
+
+                    {/*Username*/}
                     <div>
                         <span style={{"font-weight": "bold"}}>{item.owner}
                         </span>
                     </div>
-                </div>
-                <div className="">
-                    ···
+                    {/*Options*/}
+                    <div className="more-options ">
+                            ···
+                    </div>
+
                 </div>
             </div>
 
@@ -77,7 +132,7 @@ function Post({item})  {
 
             <div className="card-footer">
                 <div className="row">
-                    <div className="like_ctr">
+                    <div className="like_ctr action-btn" onClick={()=>{likePost(item)}}>
                         {
                             isLiked
                                 ?
@@ -94,7 +149,7 @@ function Post({item})  {
                                 </svg>
                         }
                     </div>
-                    <div className="comment_ctr">
+                    <div className="comment_ctr action-btn">
                         <svg aria-label="Comment" className="_8-yf5 " fill="#262626" height="24"
                              viewBox="0 0 48 48" width="24">
                             <path clip-rule="evenodd"
@@ -102,7 +157,7 @@ function Post({item})  {
                                   fill-rule="evenodd"></path>
                         </svg>
                     </div>
-                    <div className="share_ctr">
+                    <div className="share_ctr action-btn">
                         <svg aria-label="Share Post" className="_8-yf5 " fill="#262626" height="24"
                              viewBox="0 0 48 48" width="24">
                             <path
@@ -111,18 +166,49 @@ function Post({item})  {
                     </div>
                 </div>
                 <div className="likes_ctr">
-                    <span style={{"font-weight": "bold"}}>{likes}&nbsp;likes</span>
+                    <span style={{"font-weight": "bold","cursor":"pointer"}}>
+                        {likes}&nbsp;
+                        {
+                            likes == 1?
+                                'like'
+                                :
+                                'likes'
+                        }
+                    </span>
                 </div>
                 <div className="username_ctr">
-                    <span><a href="#" className="username" style={{"font-weight": "bold"}}>{item.owner}</a></span>
+                    <span><a href={profile_url} className="username" style={{"font-weight": "bold"}}>{item.owner}</a></span>
                     <span className="caption-ctr">&nbsp;&nbsp;{item.caption}</span>
+                </div>
+                <div className="comments-area">
+                    {allComments.length > 0?
+                        (
+                            allComments.length == 1?
+                                <span><b><a href={allComments[0].user}>
+                                    {allComments[0].user.slice(1)}
+                                </a></b>
+                                    &nbsp;{allComments[0].text}</span>
+                                :
+                                <span className="comments-count" onClick={renderComments(allComments)}>View all {allComments.length} comments</span>
+                        )
+                        :
+                        ''
+                    }
                 </div>
             </div>
 
             <div className="card-footer footer2">
-                <span>
-                    Add a comment...
-                </span>
+                <form>
+                    {commentDisabled
+                        ?
+                        <div className="post-btn disabled">Post</div>
+                        :
+                        <div className="post-btn" onClick={() => {
+                            handleCommentInput(item)
+                        }}>Post</div>
+                    }
+                    <textarea className="form-control comment-box" placeholder="Add a comment..." value={newComment} onChange={event => {setNewComment(event.target.value)}}></textarea>
+                </form>
             </div>
         </div>
     )
@@ -132,8 +218,12 @@ function Post({item})  {
 function App() {
     let [posts, setPosts] = useState([]);
 
-    useEffect(() => {
-     fetch('/posts/')
+    useEffect(async () => {
+        await fetchPosts();
+     }, []);
+
+    const fetchPosts = () => {
+        fetch('/posts/')
         .then((data) => data.json()
         )
          .then((res)=> {
@@ -142,19 +232,21 @@ function App() {
         .catch((err) => {
             console.log(err);
         });
-     }, []);
+    }
 
     return (
-        <div>
-            {
-                posts.map((post) => (
-                    <Post item={post}></Post>
-                ))
-            }
-        </div>
+        <section className="row">
+            <div className="post-section">
+                {
+                    posts.map((post) => (
+                        <Post item={post}></Post>
+                    ))
+                }
+            </div>
+
+        </section>
     );
 }
-
 
 ReactDOM.render(
     <React.StrictMode>

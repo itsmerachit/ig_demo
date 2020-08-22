@@ -2,11 +2,13 @@ main {
     background-color: #fafafa;
 }
 
-.navbar {
-    background-color: #ffffff !important;
+#nav {
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 15;
+}
+.navbar {
+    background-color: #ffffff !important;
 }
 
 .nav_btn {

@@ -6,6 +6,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+a, a:hover {
+  color: black;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -13,6 +16,10 @@ code {
 }
  #root {
    background-color: #fafafa;
+ }
+
+ .modal-content {
+   border-radius: 20px !important;
  }
 
  .App {
@@ -99,6 +106,8 @@ code {
 
 .footer2 {
   border-top: 1px solid #dbdbdb !important;
+  height: auto;
+  max-height: 80px;
 }
 .card-body {
   padding: 0 !important;
@@ -110,4 +119,42 @@ code {
 
 .fa-user {
   color:black;
+}
+
+.comment-box {
+  border: none;
+  height: 35px !important;
+  width: 94%;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  height: 50px;
+  resize: none;
+}
+
+.comment-box :active, .comment-box:focus {
+  outline:0px !important;
+  -webkit-appearance:none;
+  box-shadow: none !important;
+}
+
+.post-btn {
+  padding: 0px;
+  border: 0;
+  float: right;
+  position: relative;
+  color: #0095f6;
+  cursor: pointer;
+}
+
+.action-btn {
+  cursor: pointer;
+}
+
+.disabled {
+  cursor: not-allowed;
+  color: #0095f685;
+}
+
+.comments-count {
+  color: #8e8e8e !important;
 }
