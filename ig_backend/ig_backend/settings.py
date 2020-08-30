@@ -25,7 +25,7 @@ SECRET_KEY = '#d()f*(+f+$s+4a^_-q#kcip*zm+mh+vrhzt9c-kcxhs6ie=pr'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'ig-demo21.herokuapp.com']
 
 
 # Application definition
