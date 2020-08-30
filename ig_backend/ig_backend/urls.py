@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from .views import *
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,4 +32,8 @@ urlpatterns = [
     path('like/', like, name='like'),
     path('unlike/', unlike, name='unlike'),
     path('comment/', add_comment, name='add_comment'),
+    path('add_profile_pic/', add_profile_pic, name='add_profile_pic'),
 ]
+
+urlpatterns += staticfiles_urlpatterns()
+
