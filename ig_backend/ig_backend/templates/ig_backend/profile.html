@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
           integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
           crossorigin="anonymous"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.min.css" rel="stylesheet">
+
 
 </head>
 <body>
@@ -20,26 +22,7 @@
     {% include "ig_backend/footer.html" %}
     {% include "ig_backend/footer-js.html" %}
 </main>
-
-<div class="modal fade" id="modal_profile_pic">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-            <div class="modal-header">Change Profile Photo</div>
-            <div class="modal-body">
-                <div class="" id="upload_profile_pic">
-                    Upload New
-                    <input type="file" id="post_upload" accept="image/*">
-                </div>
-            </div>
-            <div class="modal-body" id="remove_profile_pic">Remove Current</div>
-            <div class="modal-footer">
-                <button class="btn" data-dismiss="modal">Cancel</button>
-            </div>
-
-        </div>
-    </div>
-</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.4/croppie.min.js"></script>
 
 <!--React dependencies-->
 <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>

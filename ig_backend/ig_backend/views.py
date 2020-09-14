@@ -1,6 +1,8 @@
 import json
+import logging
 
 import firebase_admin, os
+import requests
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
@@ -10,6 +12,7 @@ from . import settings
 from firebase_admin import auth, firestore, credentials
 import uuid
 from django.core import serializers
+logger = logging.getLogger(__name__)
 
 
 if (not len(firebase_admin._apps)):
@@ -20,6 +23,7 @@ db = firestore.client()
 
 
 def home(request):
+    print(settings.STATIC_ROOT)
     if not request.user.is_authenticated:
         return render(request, 'ig_backend/homepage.html', {})
     else:
@@ -193,29 +197,51 @@ def get_posts(request):
 
 @login_required
 def like(request):
-    post_id = json.loads(request.body)['post']
-    user = User.objects.get(username=request.user)
-    post = Post.objects.get(id=post_id)
-    like_post = Likes(post=post, user=user)
-    like_post.save()
+    if request.method == 'POST':
+        post_id = json.loads(request.body)['post']
+        user = User.objects.get(username=request.user)
+        post = Post.objects.get(id=post_id)
+        like_post = Likes(post=post, user=user)
+        like_post.save()
+    else:
+        print("Bad request")
     return HttpResponse("ok", content_type='application/json')
 
 
 @login_required
 def unlike(request):
-    post_id = json.loads(request.body)['post']
-    like_post = Likes.objects.filter(post=post_id, user=request.user.id).first()
-    like_post.delete()
+    if request.method == 'POST':
+        post_id = json.loads(request.body)['post']
+        like_post = Likes.objects.filter(post=post_id, user=request.user.id).first()
+        like_post.delete()
+    else:
+        print("Bad request")
     return HttpResponse("ok", content_type='application/json')
 
 
 @login_required
 def add_comment(request):
-    data = json.loads(request.body)
-    comment = data['comment']
-    post_id = data['post_id']
-    user = User.objects.get(username=request.user)
-    post = Post.objects.filter(id=post_id).first()
-    new_comment = Comment(post=post, user=user, content=comment[:40])
-    new_comment.save()
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        comment = data['comment']
+        post_id = data['post_id']
+        user = User.objects.get(username=request.user)
+        post = Post.objects.filter(id=post_id).first()
+        new_comment = Comment(post=post, user=user, content=comment[:40])
+        new_comment.save()
+    else:
+        print("Bad request")
+    return HttpResponse('ok', content_type='application/json')
+
+
+@login_required
+def add_profile_pic(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        profile_pic_url = data['url']
+        userprofile = UserProfile.objects.get(username=request.user)
+        userprofile.profile_pic = profile_pic_url
+        userprofile.save()
+    else:
+        logger.debug("Bad request")
     return HttpResponse('ok', content_type='application/json')

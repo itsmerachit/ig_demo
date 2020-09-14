@@ -33,11 +33,11 @@ $("#upload_btn").click(function (){
         console.log("No file selected");
         return;
     }
-    uploadPost(file, caption);
+    uploadFileToFs(file, caption, sendURLtoBackend);
 });
 
 
-async function uploadPost(file, caption) {
+async function uploadFileToFs(file, caption, callbackFn) {
     let file_blob = new Blob([file]);
     let name = file.name
 
@@ -60,30 +60,11 @@ async function uploadPost(file, caption) {
     () => {
         uploadTask.snapshot.ref.getDownloadURL()
             .then(async (downloadURL) => {
-                let data = {
-                        'url': downloadURL,
-                        'caption': caption
-                }
-                $.ajax({
-                    url: '/upload/',
-                    method: "POST",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
-                    data: JSON.stringify(data)
-            })
-            .then((res)=>{
-                changeLoadingState()
-                $("#modal_upload").modal('hide');
-                window.location.reload();
+                callbackFn(downloadURL, caption);
             })
             .catch((error)=> {
-                changeLoadingState()
                 console.log(error);
             });
-        });
     });
 }
 
@@ -106,3 +87,29 @@ function getCookie(name) {
 $("#home_nav").click(function (){
     window.location.href = '/'
 });
+
+function sendURLtoBackend(downloadURL, caption) {
+    let data = {
+        'url': downloadURL,
+        'caption': caption
+    }
+    $.ajax({
+        url: '/upload/',
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        data: JSON.stringify(data)
+    }).then((res)=>{
+        changeLoadingState()
+        $("#modal_upload").modal('hide');
+        window.location.reload();
+    })
+    .catch((err)=> {
+        console.log(err)
+        changeLoadingState()
+    })
+
+}

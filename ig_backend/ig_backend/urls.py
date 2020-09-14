@@ -32,7 +32,7 @@ urlpatterns = [
     path('like/', like, name='like'),
     path('unlike/', unlike, name='unlike'),
     path('comment/', add_comment, name='add_comment'),
-    path('add_profile_pic/', add_profile_pic, name='add_profile_pic'),
+    path('add_profile_pic/', add_profile_pic, name='add_profile_pic')
 ]
 
 urlpatterns += staticfiles_urlpatterns()
