@@ -126,9 +126,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGOUT_REDIRECT_URL = 'login/'
 
 FIREBASE_CONFIG = {
-    'apiKey': 'AIzaSyDCI0ljO6dKCin9B5oCs2Q0dobAImC9F8o',
-    'authDomain': 'teststore-6e85e.firebaseapp.com',
-    'databaseURL': 'https://teststore-6e85e.firebaseio.com',
-    'storageBucket': 'gs://teststore-6e85e.appspot.com',
-    'projectId': 'teststore-6e85e',
+    'apiKey': 'key',
+    'authDomain': 'authDomain',
+    'databaseURL': 'dbUrl',
+    'storageBucket': 'StorageBucketURL',
+    'projectId': 'projectId',
 };
