@@ -80,6 +80,19 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
+        $(document).ready(function () {
+            $("#password_error").hide();
+        })
+
+        $("#cnfrm_password").keyup(() => {
+            if ($("#password").val() != "") {
+                if (($("#cnfrm_password").val() !== $("#password").val())) {
+                    $("#password_error").show();
+                } else {
+                    $("#password_error").hide();
+                }
+            }
+        })
         $("#signup_btn").click(() => {
             let username = $("#username").val();
             let first_name = $("#first_name").val();
@@ -95,7 +108,7 @@
                 return;
             }
             if (password != cnfrm) {
-                alert("Passwords do not match")
+                $("#password_error").show();
                 return;
             }
             $.ajax({
@@ -112,6 +125,7 @@
                 }
             }).done(function (data) {
                 if (data === 'OK') {
+                    $("#password_error").show();
                     window.location = '{% url "home" %}'
                 } else {
                     alert(data)
