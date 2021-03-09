@@ -18,31 +18,6 @@
 <body>
     <main>
         <div>
-            <!-- <form action="#"> -->
-                <!-- <div>
-                    <input type="email" placeholder="Email" id="email" name="email" required>
-                </div>
-                <div>
-                    <input type="text" placeholder="First Name" id="first_name" name="first_name" required>
-                </div>
-                <div>
-                    <input type="text" placeholder="Last Name" id="last_name" name="last_name" required>
-                </div>
-                <select name="gender" id="gender" required>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                </select>
-                <div>
-                    <input type="text" placeholder="Username" id="username" name="username" required>
-                </div>
-                <div>
-                    <input type="password" placeholder="Password" id="password" name="password" required>
-                </div>
-                <div>
-                    <button type="button" id="signup_btn">Sign Up</button>
-                </div> -->
-            <!-- </form> -->
 
             <div class="row h-100">
                 <form class="border col-md-4 mx-auto pt-2">
@@ -51,48 +26,54 @@
                             <img src="{% static 'images/ig_name.png' %}" alt="Instagram" class="mx-auto my-auto logo">
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="First Name" id="first_name" class="form-control w-75 mx-auto" required minlength="3">
+                            <input type="text" placeholder="First Name" id="first_name"
+                                class="form-control w-75 mx-auto" required minlength="3">
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Last Name" id="last_name" class="form-control w-75 mx-auto" required minlength="2">
+                            <input type="text" placeholder="Last Name" id="last_name" class="form-control w-75 mx-auto"
+                                required minlength="2">
                         </div>
                         <div class="form-group">
-                            <input type="email" placeholder="Email" id="email" class="form-control w-75 mx-auto" required>
+                            <input type="email" placeholder="Email" id="email" class="form-control w-75 mx-auto"
+                                required>
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Username" id="username" class="form-control w-75 mx-auto" required minlength="6">
+                            <input type="text" placeholder="Username" id="username" class="form-control w-75 mx-auto"
+                                required minlength="6">
+                            <small id="username_error" class="valid-feedback">Invalid Username!</small>
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control w-75 mx-auto" placeholder="Password" required minlength="8"
-                                id="password">
+                            <input type="text" class="form-control w-75 mx-auto" placeholder="Password" required
+                                minlength="8" id="password">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control w-75 mx-auto" placeholder="Repeat Password" required minlength="8"
-                                id="cnfrm_password">
+                            <input type="text" class="form-control w-75 mx-auto" placeholder="Repeat Password" required
+                                minlength="8" id="cnfrm_password">
                         </div>
+                        <small id="password_error" class="alert-danger">Passwords do not match!</small>
                         <div class="form-group">
-                            <select class="form-control w-75 mx-auto" placeholder="Gender" required
-                                id="gender">
-                                <option value="male">Male</option>
+                            <select class="form-control w-75 mx-auto" placeholder="Gender" required id="gender">
+                                <option value="male" selected>Male</option>
                                 <option value="male">Female</option>
                                 <option value="male">Other</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <button type="button" class="form-control w-75 mx-auto btn-primary" id="login_btn">Submit</button>
+                            <button type="su" class="form-control w-75 mx-auto btn-primary"
+                                id="signup_btn">Submit</button>
                         </div>
-                        
+
                     </div>
                 </form>
             </div>
 
             <div class="row mt-3">
                 <div class="border col-md-4 mx-auto ">
-                        <p class="mx-auto signup_para">
-                            <span class="mx-auto w-100">Don't have an account?
-                                <a href='{% url "sign_in" %}' id="signup_btn">Sign Up</a>
-                            </span>
-                        </p>
+                    <p class="mx-auto signup_para">
+                        <span class="mx-auto w-100">Don't have an account?
+                            <a href='{% url "sign_in" %}' id="signup_btn">Sign Up</a>
+                        </span>
+                    </p>
                 </div>
             </div>
     </main>
@@ -106,12 +87,15 @@
             let email = $("#email").val();
             let gender = $("#gender").val();
             let password = $("#password").val();
-            let cnfrm = $("cnfrm_password").val()
+            let cnfrm = $("#cnfrm_password").val()
 
-            if (!username || !password || !email || !first_name || !last_name || !gender ||!cnfrm) {
+            console.log(password, cnfrm);
+
+            if (!username || !password || !email || !first_name || !last_name || !gender) {
                 return;
             }
-            if(password !== cnfrm) {
+            if (password != cnfrm) {
+                alert("Passwords do not match")
                 return;
             }
             $.ajax({
@@ -148,9 +132,10 @@
                 }
             }).done(function (data) {
                 if (data !== 'OK') {
-                    alert(data)
                     $("#username").val('');
                 }
+            }).catch(err => {
+                alert("invalid username")
             })
         })
     </script>
