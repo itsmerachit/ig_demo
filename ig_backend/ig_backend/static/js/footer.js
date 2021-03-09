@@ -9,7 +9,7 @@ function uuid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
 }
-function changeLoadingState(){
+function changeLoadingState() {
     $("#isLoading").toggle()
 }
 
@@ -24,7 +24,7 @@ $("#logout_btn").click(function () {
     });
 });
 
-$("#upload_btn").click(function (){
+$("#upload_btn").click(function () {
 
     changeLoadingState()
     let file = $("#post_upload").prop('files')[0];
@@ -46,7 +46,7 @@ async function uploadFileToFs(file, caption, callbackFn) {
         .child(name)
         .put(file_blob);
 
-    await uploadTask.on('state_changed', function (snapshot) {
+    uploadTask.on('state_changed', (snapshot) => {
         switch (snapshot.state) {
             case firebase.storage.TaskState.PAUSED: // or 'paused'
                 break;
@@ -54,18 +54,18 @@ async function uploadFileToFs(file, caption, callbackFn) {
                 break;
         }
     },
-    (error) => {
-        console.log(error);
-    },
-    () => {
-        uploadTask.snapshot.ref.getDownloadURL()
-            .then(async (downloadURL) => {
-                callbackFn(downloadURL, caption);
-            })
-            .catch((error)=> {
-                console.log(error);
-            });
-    });
+        (error) => {
+            console.log(error);
+        },
+        () => {
+            uploadTask.snapshot.ref.getDownloadURL()
+                .then(async (downloadURL) => {
+                    callbackFn(downloadURL, caption);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        });
 }
 
 function getCookie(name) {
@@ -84,7 +84,7 @@ function getCookie(name) {
     return cookieValue;
 }
 
-$("#home_nav").click(function (){
+$("#home_nav").click(function () {
     window.location.href = '/'
 });
 
@@ -102,14 +102,14 @@ function sendURLtoBackend(downloadURL, caption) {
             'X-CSRFToken': getCookie('csrftoken')
         },
         data: JSON.stringify(data)
-    }).then((res)=>{
+    }).then((res) => {
         changeLoadingState()
         $("#modal_upload").modal('hide');
         window.location.reload();
     })
-    .catch((err)=> {
-        console.log(err)
-        changeLoadingState()
-    })
+        .catch((err) => {
+            console.log(err)
+            changeLoadingState()
+        })
 
 }

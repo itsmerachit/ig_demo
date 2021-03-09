@@ -1,99 +1,160 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>Sign Up</title>
+    <style>
+        .logo {
+            max-height: 80px !important;
+            display: block;
+        }
+    </style>
 </head>
+
 <body>
-<main>
-    <div>
-        <form action="#">
-            <div>
-                <input type="email" placeholder="Email" id="email" name="email" required>
-            </div>
-            <div>
-                <input type="text" placeholder="First Name" id="first_name" name="first_name" required>
-            </div>
-            <div>
-                <input type="text" placeholder="Last Name" id="last_name" name="last_name" required>
-            </div>
-            <select name="gender" id="gender" required>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-            </select>
-            <div>
-                <input type="text" placeholder="Username" id="username" name="username" required>
-            </div>
-            <div>
-                <input type="password" placeholder="Password" id="password" name="password" required>
-            </div>
-            <div>
-                <button type="button" id="signup_btn">Sign Up</button>
-            </div>
-        </form>
-
+    <main>
         <div>
-            <span>Have an account?</span>
-            <a href="{% url 'sign_in' %}">Log in</a>
-        </div>
-    </div>
-</main>
+            <!-- <form action="#"> -->
+                <!-- <div>
+                    <input type="email" placeholder="Email" id="email" name="email" required>
+                </div>
+                <div>
+                    <input type="text" placeholder="First Name" id="first_name" name="first_name" required>
+                </div>
+                <div>
+                    <input type="text" placeholder="Last Name" id="last_name" name="last_name" required>
+                </div>
+                <select name="gender" id="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+                <div>
+                    <input type="text" placeholder="Username" id="username" name="username" required>
+                </div>
+                <div>
+                    <input type="password" placeholder="Password" id="password" name="password" required>
+                </div>
+                <div>
+                    <button type="button" id="signup_btn">Sign Up</button>
+                </div> -->
+            <!-- </form> -->
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $("#signup_btn").click(()=> {
-        let username = $("#username").val();
-        let first_name = $("#first_name").val();
-        let last_name = $("#last_name").val();
-        let email = $("#email").val();
-        let gender = $("#gender").val();
-        let password = $("#password").val();
+            <div class="row h-100">
+                <form class="border col-md-4 mx-auto pt-2">
+                    <div class="form_contents">
+                        <div class="form-group">
+                            <img src="{% static 'images/ig_name.png' %}" alt="Instagram" class="mx-auto my-auto logo">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="First Name" id="first_name" class="form-control w-75 mx-auto" required minlength="3">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Last Name" id="last_name" class="form-control w-75 mx-auto" required minlength="2">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email" id="email" class="form-control w-75 mx-auto" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="Username" id="username" class="form-control w-75 mx-auto" required minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control w-75 mx-auto" placeholder="Password" required minlength="8"
+                                id="password">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control w-75 mx-auto" placeholder="Repeat Password" required minlength="8"
+                                id="cnfrm_password">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control w-75 mx-auto" placeholder="Gender" required
+                                id="gender">
+                                <option value="male">Male</option>
+                                <option value="male">Female</option>
+                                <option value="male">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="form-control w-75 mx-auto btn-primary" id="login_btn">Submit</button>
+                        </div>
+                        
+                    </div>
+                </form>
+            </div>
 
-        if(!username || !password || !email || !first_name || !last_name || !gender) {
-            return;
-        }
-        $.ajax({
-            url: "{% url 'sign_up' %}",
-            method: "POST",
-            data: {
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-                username: username,
-                email: email,
-                first_name: first_name,
-                last_name: last_name,
-                gender: gender,
-                password: password
+            <div class="row mt-3">
+                <div class="border col-md-4 mx-auto ">
+                        <p class="mx-auto signup_para">
+                            <span class="mx-auto w-100">Don't have an account?
+                                <a href='{% url "sign_in" %}' id="signup_btn">Sign Up</a>
+                            </span>
+                        </p>
+                </div>
+            </div>
+    </main>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $("#signup_btn").click(() => {
+            let username = $("#username").val();
+            let first_name = $("#first_name").val();
+            let last_name = $("#last_name").val();
+            let email = $("#email").val();
+            let gender = $("#gender").val();
+            let password = $("#password").val();
+            let cnfrm = $("cnfrm_password").val()
+
+            if (!username || !password || !email || !first_name || !last_name || !gender ||!cnfrm) {
+                return;
             }
-        }).done(function (data) {
-            if (data === 'OK') {
-                window.location = '{% url "home" %}'
-            } else {
-                alert(data)
+            if(password !== cnfrm) {
+                return;
             }
+            $.ajax({
+                url: "{% url 'sign_up' %}",
+                method: "POST",
+                data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    username: username,
+                    email: email,
+                    first_name: first_name,
+                    last_name: last_name,
+                    gender: gender,
+                    password: password
+                }
+            }).done(function (data) {
+                if (data === 'OK') {
+                    window.location = '{% url "home" %}'
+                } else {
+                    alert(data)
+                }
+            })
+        });
+
+        $("#username").on('keyup', function (event) {
+            let username = $("#username").val();
+            if (!username) {
+                return;
+            }
+            $.ajax({
+                url: '{% url "check_username" %}',
+                method: 'GET',
+                data: {
+                    username: username
+                }
+            }).done(function (data) {
+                if (data !== 'OK') {
+                    alert(data)
+                    $("#username").val('');
+                }
+            })
         })
-    });
-
-    $("#username").on('keyup', function (event) {
-        let username = $("#username").val();
-        if (!username) {
-            return;
-        }
-        $.ajax({
-            url: '{% url "check_username" %}',
-            method: 'GET',
-            data: {
-                username: username
-            }
-        }).done(function(data){
-            if (data !== 'OK') {
-                alert(data)
-                $("#username").val('');
-            }
-        })
-    })
-</script>
+    </script>
 
 </body>
+
 </html>

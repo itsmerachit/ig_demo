@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <meta charset="UTF-8">
@@ -9,32 +10,41 @@
         .btn-primary {
             background-color: #0095f7 !important;
         }
-        #signup_btn{
+
+        #signup_btn {
             color: #0095f6;
         }
+
         body {
             height: 100%;
             background-color: #fafafa;
         }
-        form{
+
+        form {
             background-color: #ffffff;
             margin-top: 10rem;
         }
+
         .logo {
             max-height: 80px !important;
             display: block;
         }
-        .form-group:first-child{
+
+        .form-group:first-child {
             margin-bottom: 2rem;
         }
-        .form_contents{
-            padding: 2rem 0;;
+
+        .form_contents {
+            padding: 2rem 0;
+            ;
         }
-        .signup_para{
+
+        .signup_para {
             margin-bottom: 0px;
         }
     </style>
 </head>
+
 <body>
     <div id="root">
         <div class="row h-100">
@@ -50,50 +60,53 @@
                         <input type="password" class="form-control w-75 mx-auto" placeholder="Password" id="password">
                     </div>
                     <div class="form-group">
-<!--                        <button type="button" id="login_btn" class="btn btn-primary form-control w-75 mx-auto">Log In</button>-->
-                        <button type="button" class="form-control w-75 mx-auto btn-primary" id="login_btn">Log In</button>
+                        <!--                        <button type="button" id="login_btn" class="btn btn-primary form-control w-75 mx-auto">Log In</button>-->
+                        <button type="button" class="form-control w-75 mx-auto btn-primary" id="login_btn">Log
+                            In</button>
                     </div>
                 </div>
             </form>
         </div>
-            <div class="row mt-3">
-                <div class="border col-md-4 mx-auto ">
-                    <div>
-                        <p class="mx-auto signup_para">
-                            <span class="mx-auto w-100">Don't have an account?
-                                <a href='{% url "sign_up" %}' id="signup_btn">Sign Up</a>
-                            </span>
-                        </p>
+        <div class="row mt-3">
+            <div class="border col-md-4 mx-auto ">
+                <div>
+                    <p class="mx-auto signup_para">
+                        <span class="mx-auto w-100">Don't have an account?
+                            <a href='{% url "sign_up" %}' id="signup_btn">Sign Up</a>
+                        </span>
+                    </p>
                 </div>
             </div>
+        </div>
     </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $("#login_btn").click(() => {
-        console.log("here")
-        let username = $("#username").val();
-        let password = $("#password").val();
-        if (!username || !password) {
-            return;
-        }
-        $.ajax({
-            url: "{% url 'sign_in' %}",
-            method: "POST",
-            data: {
-                username: username,
-                password: password,
-                csrfmiddlewaretoken: '{{ csrf_token }}',
-            },
-        }).done(function (data) {
-            console.log("ajax")
-            if (data !== 'OK') {
-                alert(data)
-            } else {
-                console.log("here2")
-                window.location = "{% url 'home' %}";
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $("#login_btn").click(() => {
+            console.log("here")
+            let username = $("#username").val();
+            let password = $("#password").val();
+            if (!username || !password) {
+                return;
             }
+            $.ajax({
+                url: "{% url 'sign_in' %}",
+                method: "POST",
+                data: {
+                    username: username,
+                    password: password,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+            }).done(function (data) {
+                console.log("ajax")
+                if (data !== 'OK') {
+                    alert(data)
+                } else {
+                    console.log("here2")
+                    window.location = "{% url 'home' %}";
+                }
+            });
         });
-    });
-</script>
+    </script>
 </body>
+
 </html>
